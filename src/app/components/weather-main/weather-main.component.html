@@ -1,0 +1,16 @@
+<div class="col-12">
+    <div class="row">
+        <div class="col-4">
+            <app-locations-list
+                [locationsList]="locationList$ | async"
+                [selectedLocationWeatherForecast]="selectedLocationWeatherForecast$ | async"
+            ></app-locations-list>
+        </div>
+        <div class="col-8">
+            <app-location-weather
+                *ngIf="selectedLocationWeatherForecast$ | async as selectedLocationWeatherForecast"
+                [weatherForecast]="selectedLocationWeatherForecast"
+            ></app-location-weather>
+        </div>
+    </div>
+</div>

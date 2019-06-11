@@ -1,0 +1,27 @@
+<div class="card border-secondary selected-item">
+    <div class="card-body">
+        <h2 class="card-title">
+            Weather forecast for: {{ weatherForecast.location?.name }}
+        </h2>
+        <p class="card-text">
+            summary: {{ weatherForecast.summary }}<br>
+            temperature: {{ weatherForecast.temperature }} degrees Celsius<br>
+            apparent temperature: {{ weatherForecast.apparentTemperature }} degrees Celsius<br>
+            wind speed: {{ weatherForecast.windSpeed }} kilometers per hour<br>
+            wind bearing: {{ weatherForecast.windBearing | windBearing }} ({{ weatherForecast.windBearing }})<br>
+            humidity: {{ weatherForecast.humidity * 100 | number:'0.0' }}%
+        </p>
+        <agm-map
+            [latitude]='weatherForecast.location.lat'
+            [longitude]='weatherForecast.location.lng'
+            [zoom]="10"
+        >
+            <agm-marker
+                [latitude]="weatherForecast.location.lat"
+                [longitude]="weatherForecast.location.lng"
+                [markerDraggable]="false"
+            >
+            </agm-marker>
+        </agm-map>
+    </div>
+</div>

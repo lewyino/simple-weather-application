@@ -1,0 +1,29 @@
+<div
+    class="card border-secondary"
+    [ngClass]="{
+        'selected-item': selected,
+        'mt-2': !first
+        }"
+    (click)="handleLocationClick()"
+>
+    <div class="card-body">
+        <h4 class="card-title">
+            {{ location.name }}
+        </h4>
+        <p class="card-text">
+            {{ location.lat }}, {{ location.lng }}
+        </p>
+        <button
+            class="btn btn-sm btn-primary mr-2"
+            routerLink="/location-form/{{location.id}}"
+        >
+            EDIT
+        </button>
+        <button
+            class="btn btn-sm btn-danger"
+            (click)="handleDeleteClick()"
+        >
+            X
+        </button>
+    </div>
+</div>

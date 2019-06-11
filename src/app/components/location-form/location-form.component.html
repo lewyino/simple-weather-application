@@ -1,0 +1,105 @@
+<div class="card" *ngIf="form">
+    <div class="card-body">
+        <h2 class="card-title">
+            {{ type | titlecase }} location
+        </h2>
+        <div class="card-text row">
+            <div class="col-4">
+                <form [formGroup]="form" (ngSubmit)="handleSubmitForm()" class="col-12">
+                    <mat-form-field class="col-12">
+                        <input
+                            matInput
+                            placeholder="name"
+                            formControlName="name"
+                            autocomplete="off"
+                        >
+                    </mat-form-field>
+                    <mat-form-field class="col-12">
+                        <input
+                            matInput
+                            type="number"
+                            placeholder="latitude"
+                            formControlName="lat"
+                            autocomplete="off"
+                            (blur)="handleLatLngBlur()"
+                        >
+                    </mat-form-field>
+                    <mat-form-field class="col-12">
+                        <input
+                            matInput
+                            type="number"
+                            placeholder="longitude"
+                            formControlName="lng"
+                            autocomplete="off"
+                            (blur)="handleLatLngBlur()"
+                        >
+                    </mat-form-field>
+                    <button
+                        class="btn col-4"
+                        type="submit"
+                        [ngClass]="{
+                            'btn-success': form.valid,
+                            'btn-secondary': form.dirty && !form.valid
+                        }"
+                    >
+                        submit!
+                    </button>
+                    <button
+                        class="btn col-4 ml-2"
+                        type="button"
+                        (click)="handleResetForm()"
+                        [ngClass]="{
+                            'btn-warning': form.dirty
+                        }"
+                    >
+                        reset
+                    </button>
+                </form>
+                <div class="alert alert-danger col-12 mt-2" role="alert" *ngIf="error && !form.valid">
+                    form error!
+                    <div *ngIf="form.get('name')?.errors?.required">
+                        name required
+                    </div>
+                    <div *ngIf="form.get('lat')?.errors?.required">
+                        latitude required
+                    </div>
+                    <div *ngIf="form.get('lat')?.errors?.min">
+                        latitude min: {{ form.get('lat')?.errors?.min.min }},
+                        actual: {{ form.get('lat')?.errors?.min.actual }}
+                    </div>
+                    <div *ngIf="form.get('lat')?.errors?.max">
+                        latitude max: {{ form.get('lat')?.errors?.max.max }},
+                        actual: {{ form.get('lat')?.errors?.max.actual }}
+                    </div>
+                    <div *ngIf="form.get('lng')?.errors?.required">
+                        longitude required
+                    </div>
+                    <div *ngIf="form.get('lng')?.errors?.min">
+                        longitude min: {{ form.get('lng')?.errors?.min.min }},
+                        actual: {{ form.get('lng')?.errors?.min.actual }}
+                    </div>
+                    <div *ngIf="form.get('lng')?.errors?.max">
+                        longitude max: {{ form.get('lng')?.errors?.max.max }},
+                        actual: {{ form.get('lng')?.errors?.max.actual }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <agm-map
+                    [latitude]='mapLatLng.lat'
+                    [longitude]='mapLatLng.lng'
+                    (mapClick)="handleSetMarker($event.coords)"
+                    [zoom]="6"
+                >
+                    <agm-marker
+                        [latitude]="form?.value?.lat"
+                        [longitude]="form?.value?.lng"
+                        [markerDraggable]="true"
+                        (dragEnd)="handleSetMarker($event.coords)"
+                    >
+                    </agm-marker>
+                </agm-map>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="col-12">
+    <app-location
+        *ngFor="let location of locationsList; let first = first"
+        [location]="location"
+        [selected]="location.name === selectedLocationWeatherForecast?.location?.name"
+        [first]="first"
+    ></app-location>
+</div>
