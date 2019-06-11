@@ -3,11 +3,6 @@ import {DarkskyInterface} from '../models/interfaces/darksky.interface';
 
 export class DarkskyMockService {
 
-    constructor() {
-
-        console.log('DarkskyMockService');
-    }
-
     getDataForLatLng(lat: number, lng: number): Observable<DarkskyInterface> {
         return of(
             {

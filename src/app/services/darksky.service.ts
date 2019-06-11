@@ -20,7 +20,6 @@ export class DarkskyService {
     private readonly url = `${this.API_URL}${this.API_KEY}/{lat},{lng}?exclude=daily,hourly,flags&lang=${this.LANG}&units=${this.UNITS}`;
 
     constructor(private httpClient: HttpClient) {
-        console.log('DarkskyService');
     }
 
     getDataForLatLng(lat: number, lng: number): Observable<DarkskyInterface> {
