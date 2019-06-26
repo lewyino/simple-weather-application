@@ -11,6 +11,7 @@ import {
 import {LocationModel} from '../../models/location.model';
 import {WeatherForecastModel} from '../../models/weather-forecast.model';
 import {DarkskyInterface} from '../../models/interfaces/darksky.interface';
+import {NgrxActionModel} from '../model/ngrx-action.model';
 
 
 @Injectable()
@@ -20,11 +21,11 @@ export class WeatherForecastEffects {
     loadWeatherForecast$ = this.actions$
         .pipe(
             ofType(WeatherForecastActionEnum.LOAD),
-            switchMap((location: LocationModel) => this.darkskyService.getDataForLatLng(location.lat, location.lng)
+            switchMap(({type, payload}: NgrxActionModel<LocationModel>) => this.darkskyService.getDataForLatLng(payload.lat, payload.lng)
                 .pipe(
                     map((darkskyData: DarkskyInterface) => {
                         const weatherForecast = new WeatherForecastModel({
-                            location,
+                            location: payload,
                             ...darkskyData.currently
                         });
                         return new LoadWeatherForecastSuccessAction(weatherForecast);

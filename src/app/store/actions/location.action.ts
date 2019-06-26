@@ -12,11 +12,11 @@ export enum LocationActionEnum {
 }
 
 export class LoadLocationsAction extends NgrxActionModel {
-    type: LocationActionEnum.LOAD_LOCATIONS;
+    readonly type = LocationActionEnum.LOAD_LOCATIONS;
 }
 
 export class LoadLocationsSuccessAction extends NgrxActionModel<LocationModel[]> {
-    type: LocationActionEnum.LOAD_LOCATIONS_SUCCESS;
+    readonly type = LocationActionEnum.LOAD_LOCATIONS_SUCCESS;
 
     constructor(locations: LocationModel[]) {
         super();
@@ -25,11 +25,11 @@ export class LoadLocationsSuccessAction extends NgrxActionModel<LocationModel[]>
 }
 
 export class LoadLocationsFailedAction extends NgrxActionModel {
-    type: LocationActionEnum.LOAD_LOCATIONS_FAILED;
+    readonly type = LocationActionEnum.LOAD_LOCATIONS_FAILED;
 }
 
 export class SelectLocationsAction extends NgrxActionModel<LocationModel> {
-    type: LocationActionEnum.SELECT_LOCATION;
+    readonly type = LocationActionEnum.SELECT_LOCATION;
 
     constructor(location: LocationModel) {
         super();
@@ -38,7 +38,7 @@ export class SelectLocationsAction extends NgrxActionModel<LocationModel> {
 }
 
 export class AddLocationsAction extends NgrxActionModel<LocationModel> {
-    type: LocationActionEnum.ADD;
+    readonly type = LocationActionEnum.ADD;
 
     constructor(location: LocationModel) {
         super();
@@ -47,11 +47,11 @@ export class AddLocationsAction extends NgrxActionModel<LocationModel> {
 }
 
 export class AddLocationsSuccessAction extends NgrxActionModel {
-    type: LocationActionEnum.ADD_SUCCESS;
+    readonly type = LocationActionEnum.ADD_SUCCESS;
 }
 
 export class AddLocationsFailedAction extends NgrxActionModel {
-    type: LocationActionEnum.ADD_FAILED;
+    readonly type = LocationActionEnum.ADD_FAILED;
 }
 
 

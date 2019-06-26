@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LocationModel} from '../../models/location.model';
-import {StoreService} from '../../services/store.service';
-import {DialogComponent} from '../dialog/dialog.component';
 import {MatDialog} from '@angular/material';
+import {ApplicationStateInterface} from '../../store/model/application-state.interface';
+import {Store} from '@ngrx/store';
+import {SelectLocationsAction} from '../../store/actions/location.action';
 
 @Component({
     selector: 'app-location',
@@ -15,7 +16,7 @@ export class LocationComponent implements OnInit {
     @Input() selected: boolean;
     @Input() first: boolean;
 
-    constructor(private storeService: StoreService,
+    constructor(private store: Store<ApplicationStateInterface>,
                 private dialog: MatDialog) {
     }
 
@@ -23,18 +24,18 @@ export class LocationComponent implements OnInit {
     }
 
     handleLocationClick() {
-        this.storeService.setSelectedLocationWeatherForecast(this.location);
+        this.store.dispatch(new SelectLocationsAction(this.location));
     }
 
     handleDeleteClick() {
-        const result = this.storeService.deleteLocation(this.location);
-        if (!result) {
-            this.storeService.loadLocationsList();
-            this.dialog.open(DialogComponent, {
-                width: '250px',
-                data: {message: `Location "${this.location.name}" with id: ${this.location.id} doesn't exist, locations list reloaded`},
-            });
-        }
+        // const result = this.storeService.deleteLocation(this.location);
+        // if (!result) {
+        //     this.storeService.loadLocationsList();
+        //     this.dialog.open(DialogComponent, {
+        //         width: '250px',
+        //         data: {message: `Location "${this.location.name}" with id: ${this.location.id} doesn't exist, locations list reloaded`},
+        //     });
+        // }
     }
 
 }

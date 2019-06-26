@@ -7,7 +7,7 @@ const initialState: LocationStateInterface = {
     selected: null,
 };
 
-export function reducer(state: LocationStateInterface = initialState, action: NgrxActionModel): LocationStateInterface {
+export function reducer(state: LocationStateInterface = initialState, action: NgrxActionModel<any>): LocationStateInterface {
     switch (action.type) {
         case LocationActionEnum.LOAD_LOCATIONS_SUCCESS:
             return {

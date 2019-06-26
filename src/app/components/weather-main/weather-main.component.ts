@@ -2,8 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {LocationModel} from '../../models/location.model';
 import {WeatherForecastModel} from '../../models/weather-forecast.model';
 import {filter, take} from 'rxjs/operators';
-import {StoreService} from '../../services/store.service';
 import {Observable} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {ApplicationStateInterface} from '../../store/model/application-state.interface';
+import {getLocationsList} from '../../store/selectors/location.selector';
+import {getWeatherForecast} from '../../store/selectors/weather-forecast.selector';
+import {LoadLocationsAction, SelectLocationsAction} from '../../store/actions/location.action';
 
 @Component({
     selector: 'app-weather-main',
@@ -13,25 +17,27 @@ import {Observable} from 'rxjs';
 export class WeatherMainComponent implements OnInit {
 
     locationList$: Observable<LocationModel[]>;
-    selectedLocationWeatherForecast$: Observable<WeatherForecastModel>;
+    weatherForecast$: Observable<WeatherForecastModel>;
 
-    constructor(private storeService: StoreService) {
+    constructor(private store: Store<ApplicationStateInterface>) {
     }
 
     ngOnInit() {
-        this.locationList$ = this.storeService.getLocationsList();
-        this.selectedLocationWeatherForecast$ = this.storeService.getSelectedLocationWeatherForecast();
+        this.locationList$ = this.store.pipe(
+            select(getLocationsList)
+        );
+        this.weatherForecast$ = this.store.pipe(
+            select(getWeatherForecast)
+        );
         this.locationList$
             .pipe(
                 filter((data: LocationModel[]) => data && data.length > 0),
                 take(1)
             )
             .subscribe((locations: LocationModel[]) => {
-                if (locations && locations.length) {
-                    this.storeService.setSelectedLocationWeatherForecast(locations[0]);
-                }
+                this.store.dispatch(new SelectLocationsAction(locations[0]));
             });
-        this.storeService.loadLocationsList();
+        this.store.dispatch(new LoadLocationsAction());
     }
 
 }

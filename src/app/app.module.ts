@@ -20,6 +20,9 @@ import {StoreModule} from '@ngrx/store';
 import {reducers} from './store/reducers';
 import {EffectsModule} from '@ngrx/effects';
 import {LocationEffects} from './store/effects/location.effect';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
+import {WeatherForecastEffects} from './store/effects/weather-forecast.effect';
 
 @NgModule({
     declarations: [
@@ -47,7 +50,8 @@ import {LocationEffects} from './store/effects/location.effect';
         }),
         AppRoutingModule,
         StoreModule.forRoot(reducers),
-        EffectsModule.forRoot([LocationEffects])
+        EffectsModule.forRoot([LocationEffects, WeatherForecastEffects]),
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
     ],
     entryComponents: [
         DialogComponent

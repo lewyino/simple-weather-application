@@ -9,7 +9,7 @@ export enum WeatherForecastActionEnum {
 }
 
 export class LoadWeatherForecastAction extends NgrxActionModel<LocationModel> {
-    type: WeatherForecastActionEnum.LOAD;
+    readonly type = WeatherForecastActionEnum.LOAD;
 
     constructor(location: LocationModel) {
         super();
@@ -18,7 +18,7 @@ export class LoadWeatherForecastAction extends NgrxActionModel<LocationModel> {
 }
 
 export class LoadWeatherForecastSuccessAction extends NgrxActionModel<WeatherForecastModel> {
-    type: WeatherForecastActionEnum.LOAD_SUCCESS;
+    readonly type = WeatherForecastActionEnum.LOAD_SUCCESS;
 
     constructor(weatherForecast: WeatherForecastModel) {
         super();
@@ -27,6 +27,6 @@ export class LoadWeatherForecastSuccessAction extends NgrxActionModel<WeatherFor
 }
 
 export class LoadWeatherForecastFailedAction extends NgrxActionModel {
-    type: WeatherForecastActionEnum.LOAD_FAILED;
+    readonly type = WeatherForecastActionEnum.LOAD_FAILED;
 }
 
