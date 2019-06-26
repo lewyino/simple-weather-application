@@ -16,6 +16,8 @@ import {MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule} fr
 import {DialogComponent} from './components/dialog/dialog.component';
 import {AgmCoreModule} from '@agm/core';
 import {GOOGLE_MAPS_API_KEY} from './config';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from './store/reducers';
 
 @NgModule({
     declarations: [
@@ -41,7 +43,8 @@ import {GOOGLE_MAPS_API_KEY} from './config';
         AgmCoreModule.forRoot({
             apiKey: GOOGLE_MAPS_API_KEY
         }),
-        AppRoutingModule
+        AppRoutingModule,
+        StoreModule.forRoot(reducers)
     ],
     entryComponents: [
         DialogComponent
