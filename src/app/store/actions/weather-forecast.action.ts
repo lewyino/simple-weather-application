@@ -26,7 +26,7 @@ export class LoadWeatherForecastSuccessAction extends NgrxActionModel<WeatherFor
     }
 }
 
-export class LoadLocationsFailedAction extends NgrxActionModel {
+export class LoadWeatherForecastFailedAction extends NgrxActionModel {
     type: WeatherForecastActionEnum.LOAD_FAILED;
 }
 

@@ -18,6 +18,8 @@ import {AgmCoreModule} from '@agm/core';
 import {GOOGLE_MAPS_API_KEY} from './config';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from './store/reducers';
+import {EffectsModule} from '@ngrx/effects';
+import {LocationEffects} from './store/effects/location.effect';
 
 @NgModule({
     declarations: [
@@ -44,7 +46,8 @@ import {reducers} from './store/reducers';
             apiKey: GOOGLE_MAPS_API_KEY
         }),
         AppRoutingModule,
-        StoreModule.forRoot(reducers)
+        StoreModule.forRoot(reducers),
+        EffectsModule.forRoot([LocationEffects])
     ],
     entryComponents: [
         DialogComponent
