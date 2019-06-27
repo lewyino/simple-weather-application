@@ -4,11 +4,12 @@ import {WeatherForecastModel} from '../models/weather-forecast.model';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {DarkskyService} from './darksky.service';
 import {DarkskyInterface} from '../models/interfaces/darksky.interface';
+import {LocationServiceInterface} from './location.service.interface';
 
 @Injectable({
     providedIn: 'root'
 })
-export class StoreService {
+export class StoreService implements LocationServiceInterface {
 
     private locationsList$: BehaviorSubject<LocationModel[]> = new BehaviorSubject([]);
     private selectedLocationWeatherForecast$: BehaviorSubject<WeatherForecastModel> = new BehaviorSubject(null);
@@ -21,6 +22,7 @@ export class StoreService {
     }
 
     getLocationsList(): Observable<LocationModel[]> {
+        this.loadLocationsList();
         return this.locationsList$;
     }
 
