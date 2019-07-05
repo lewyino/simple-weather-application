@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LocationModel} from '../../models/location.model';
-import {WeatherForecastModel} from '../../models/weather-forecast.model';
 
 @Component({
     selector: 'app-locations-list',
@@ -9,7 +8,7 @@ import {WeatherForecastModel} from '../../models/weather-forecast.model';
 })
 export class LocationsListComponent implements OnInit {
     @Input() locationsList: LocationModel[];
-    @Input() selectedLocationWeatherForecast: WeatherForecastModel;
+    @Input() selectedLocationWeatherForecast: LocationModel;
 
     constructor() {
     }

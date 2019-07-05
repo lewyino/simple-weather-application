@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
 import {LocationModel} from '../models/location.model';
-import {WeatherForecastModel} from '../models/weather-forecast.model';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {DarkskyService} from './darksky.service';
-import {DarkskyInterface} from '../models/interfaces/darksky.interface';
 import {LocationServiceInterface} from './location.service.interface';
 
 @Injectable({
@@ -12,7 +10,6 @@ import {LocationServiceInterface} from './location.service.interface';
 export class StoreService implements LocationServiceInterface {
 
     private locationsList$: BehaviorSubject<LocationModel[]> = new BehaviorSubject([]);
-    private selectedLocationWeatherForecast$: BehaviorSubject<WeatherForecastModel> = new BehaviorSubject(null);
     private readonly LOCATIONS_LIST_KEY = 'locationList';
 
     constructor(private darkskyService: DarkskyService) {
@@ -31,73 +28,48 @@ export class StoreService implements LocationServiceInterface {
         this.locationsList$.next(data);
     }
 
-    getSelectedLocationWeatherForecast(): Observable<WeatherForecastModel> {
-        return this.selectedLocationWeatherForecast$;
-    }
-
-    setSelectedLocationWeatherForecast(location: LocationModel): void {
-        this.darkskyService
-            .getDataForLatLng(location.lat, location.lng)
-            .subscribe((data: DarkskyInterface) => {
-                this.selectedLocationWeatherForecast$.next(
-                    new WeatherForecastModel({
-                        location,
-                        ...data.currently,
-                    })
-                );
-            });
-    }
-
-    addLocation(location: LocationModel): boolean {
+    addLocation(location: LocationModel): Observable<boolean> {
         const list = this.getDataFromLocalStorage();
         list.push(location);
         localStorage.setItem(this.LOCATIONS_LIST_KEY, JSON.stringify(list));
         this.locationsList$.next(list);
-        return true;
+        return of(true);
     }
 
-    editLocation(location: LocationModel): boolean {
+    editLocation(location: LocationModel): Observable<boolean> {
         const list = this.getDataFromLocalStorage();
         const elemToEdit = list.find((item: LocationModel) => item.id === location.id);
         if (!elemToEdit) {
             console.error(`No location: ${location.name} (id: ${location.id})`);
-            return false;
+            return of(false);
         }
         Object.assign(elemToEdit, location);
         localStorage.setItem(this.LOCATIONS_LIST_KEY, JSON.stringify(list));
         this.locationsList$.next(list);
-        return true;
+        return of(true);
     }
 
-    deleteLocation(location: LocationModel): boolean {
+    deleteLocation(location: LocationModel): Observable<boolean> {
         const list = this.getDataFromLocalStorage();
         const elemIndex = list.findIndex((item: LocationModel) => item.id === location.id);
         if (elemIndex === -1) {
             console.error(`No location: ${location.name} (id: ${location.id})`);
-            return false;
+            return of(false);
         }
         list.splice(elemIndex, 1);
         localStorage.setItem(this.LOCATIONS_LIST_KEY, JSON.stringify(list));
         this.locationsList$.next(list);
-        const selectedLocation = this.selectedLocationWeatherForecast$.getValue().location;
-        if (location.id === selectedLocation.id) {
-            if (list.length > 0) {
-                this.setSelectedLocationWeatherForecast(list[0]);
-            } else {
-                this.setSelectedLocationWeatherForecast(null);
-            }
-        }
-        return true;
+        return of(true);
     }
 
-    getLocation(locationId: string): LocationModel {
+    getLocation(locationId: string): Observable<LocationModel> {
         const list = this.getDataFromLocalStorage();
         const location = list.find((item: LocationModel) => item.id === locationId);
         if (!location) {
             console.error(`No location: ${locationId})`);
-            return null;
+            return of(null);
         }
-        return location;
+        return of(location);
     }
 
     private initData(): LocationModel[] {

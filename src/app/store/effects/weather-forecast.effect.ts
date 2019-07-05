@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {DarkskyService} from '../../services/darksky.service';
@@ -21,6 +21,7 @@ export class WeatherForecastEffects {
     loadWeatherForecast$ = this.actions$
         .pipe(
             ofType(WeatherForecastActionEnum.LOAD),
+            filter(({type, payload}) => payload),
             switchMap(({type, payload}: NgrxActionModel<LocationModel>) => this.darkskyService.getDataForLatLng(payload.lat, payload.lng)
                 .pipe(
                     map((darkskyData: DarkskyInterface) => {

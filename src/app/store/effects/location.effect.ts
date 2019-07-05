@@ -1,12 +1,21 @@
 import {Injectable} from '@angular/core';
-import {LoadLocationsFailedAction, LoadLocationsSuccessAction, LocationActionEnum} from '../actions/location.action';
+import {
+    AddLocationFailedAction,
+    AddLocationSuccessAction,
+    DeleteLocationsFailedAction,
+    DeleteLocationsSuccessAction,
+    EditLocationFailedAction,
+    EditLocationSuccessAction,
+    LoadLocationFailedAction,
+    LoadLocationsFailedAction,
+    LoadLocationsSuccessAction,
+    LoadLocationSuccessAction,
+    LocationActionEnum
+} from '../actions/location.action';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {StoreService} from '../../services/store.service';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {LoadWeatherForecastAction} from '../actions/weather-forecast.action';
-import {NgrxActionModel} from '../model/ngrx-action.model';
-import {LocationModel} from '../../models/location.model';
 
 
 @Injectable()
@@ -24,10 +33,47 @@ export class LocationEffects {
         );
 
     @Effect()
-    selectLocation$ = this.actions$
+    loadLocation$ = this.actions$
         .pipe(
-            ofType(LocationActionEnum.SELECT_LOCATION),
-            map((action: NgrxActionModel<LocationModel>) => new LoadWeatherForecastAction(action.payload))
+            ofType(LocationActionEnum.LOAD_LOCATION),
+            switchMap(({type, payload}) => this.storeService.getLocation(payload)
+                .pipe(
+                    map((location) => location ? new LoadLocationSuccessAction(location) : new LoadLocationFailedAction()),
+                    catchError(() => of(new LoadLocationFailedAction()))
+                ))
+        );
+
+    @Effect()
+    deleteLocation$ = this.actions$
+        .pipe(
+            ofType(LocationActionEnum.DELETE),
+            switchMap(({type, payload}) => this.storeService.deleteLocation(payload)
+                .pipe(
+                    map((result) => result ? new DeleteLocationsSuccessAction(payload) : new DeleteLocationsFailedAction()),
+                    catchError(() => of(new DeleteLocationsFailedAction()))
+                ))
+        );
+
+    @Effect()
+    addLocation$ = this.actions$
+        .pipe(
+            ofType(LocationActionEnum.ADD),
+            switchMap(({type, payload}) => this.storeService.addLocation(payload)
+                .pipe(
+                    map((result) => result ? new AddLocationSuccessAction(true) : new AddLocationFailedAction()),
+                    catchError(() => of(new AddLocationFailedAction()))
+                ))
+        );
+
+    @Effect()
+    editLocation$ = this.actions$
+        .pipe(
+            ofType(LocationActionEnum.EDIT),
+            switchMap(({type, payload}) => this.storeService.editLocation(payload)
+                .pipe(
+                    map((result) => result ? new EditLocationSuccessAction(true) : new EditLocationFailedAction()),
+                    catchError(() => of(new EditLocationFailedAction()))
+                ))
         );
 
     constructor(

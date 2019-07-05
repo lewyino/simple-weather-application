@@ -3,7 +3,7 @@
         <div class="col-4">
             <app-locations-list
                 [locationsList]="locationList$ | async"
-                [selectedLocationWeatherForecast]="weatherForecast$ | async"
+                [selectedLocationWeatherForecast]="selectedLocation$ | async"
             ></app-locations-list>
         </div>
         <div class="col-8">

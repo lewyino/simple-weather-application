@@ -2,7 +2,7 @@
     <app-location
         *ngFor="let location of locationsList; let first = first"
         [location]="location"
-        [selected]="location.name === selectedLocationWeatherForecast?.location?.name"
+        [selected]="location.name === selectedLocationWeatherForecast?.name"
         [first]="first"
     ></app-location>
 </div>

@@ -8,6 +8,7 @@ export function reducer(state: WeatherForecastModel = initialState, action: Ngrx
     switch (action.type) {
         case WeatherForecastActionEnum.LOAD_SUCCESS:
             return action.payload;
+
         default: {
             return  state;
         }

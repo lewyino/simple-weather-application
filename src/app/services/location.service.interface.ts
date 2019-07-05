@@ -3,8 +3,8 @@ import {LocationModel} from '../models/location.model';
 
 export interface LocationServiceInterface {
     getLocationsList(): Observable<LocationModel[]>;
-    addLocation(location: LocationModel): boolean;
-    editLocation(location: LocationModel): boolean;
-    deleteLocation(location: LocationModel): boolean;
-    getLocation(locationId: string): LocationModel;
+    addLocation(location: LocationModel): Observable<boolean>;
+    editLocation(location: LocationModel): Observable<boolean>;
+    deleteLocation(location: LocationModel): Observable<boolean>;
+    getLocation(locationId: string): Observable<LocationModel>;
 }
